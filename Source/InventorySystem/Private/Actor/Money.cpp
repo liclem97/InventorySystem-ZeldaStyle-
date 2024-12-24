@@ -27,6 +27,8 @@ void AMoney::OnConstruction(const FTransform& Transform)
 	if (RowData)
 	{
 		MoneyComponent->SetStaticMesh(RowData->Mesh);
+		MoneyType = RowData->Name;
+		MoneyAmount = RowData->Amount;
 	}
 	else
 	{

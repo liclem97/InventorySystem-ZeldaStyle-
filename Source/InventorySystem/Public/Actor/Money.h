@@ -30,6 +30,9 @@ class INVENTORYSYSTEM_API AMoney : public AActor
 public:	
 	AMoney();
 	virtual void OnConstruction(const FTransform& Transform) override;
+	FDataTableRowHandle GetMoneyData() { return MoneyData; }
+	FName GetMoneyType() { return MoneyType; }
+	int32 GetMoneyAmount() { return MoneyAmount; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -42,4 +45,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	FDataTableRowHandle MoneyData;
+
+	UPROPERTY()
+	FName MoneyType;
+
+	UPROPERTY()
+	int32 MoneyAmount;
 };
