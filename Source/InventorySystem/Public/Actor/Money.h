@@ -33,7 +33,6 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	void InitializeMoney();
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UStaticMeshComponent> MoneyComponent;
@@ -42,5 +41,5 @@ protected:
 	UDataTable* MoneyDataTable;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
-	FDataTableRowHandle MoneyAmount;
+	FDataTableRowHandle MoneyData;
 };

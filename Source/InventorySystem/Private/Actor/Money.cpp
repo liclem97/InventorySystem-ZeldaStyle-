@@ -10,7 +10,7 @@ AMoney::AMoney()
 	PrimaryActorTick.bCanEverTick = false;
 
 	MoneyComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Money"));
-
+	MoneyComponent->SetCollisionProfileName(TEXT("OverlapOnlyPawn"));
 }
 
 void AMoney::OnConstruction(const FTransform& Transform)
@@ -22,7 +22,7 @@ void AMoney::OnConstruction(const FTransform& Transform)
 	}
 
 	FString ContextString;
-	FMoneyStruct* RowData = MoneyDataTable->FindRow<FMoneyStruct>(MoneyAmount.RowName, ContextString);
+	FMoneyStruct* RowData = MoneyDataTable->FindRow<FMoneyStruct>(MoneyData.RowName, ContextString);
 
 	if (RowData)
 	{
