@@ -112,19 +112,9 @@ void AInventoryCharacter::Inventory()
 	}
 
 	InventoryWidget = InventoryWidget == nullptr ? CreateWidget<UUserWidget>(GetWorld(), InventoryWidgetClass) : InventoryWidget;
-	if (bShowInventoryWidget)
-	{
-		InventoryWidget->RemoveFromParent();
-		PlayerController->bShowMouseCursor = false;
-		PlayerController->SetInputMode(FInputModeGameOnly());
-	}
-	else
-	{
-		InventoryWidget->AddToViewport();
-		PlayerController->bShowMouseCursor = true;
-		PlayerController->SetInputMode(FInputModeGameAndUI());
-	}
-	bShowInventoryWidget = !bShowInventoryWidget;
+	InventoryWidget->AddToViewport();
+	PlayerController->bShowMouseCursor = true;
+	PlayerController->SetInputMode(FInputModeUIOnly().SetWidgetToFocus(InventoryWidget->TakeWidget()));
 }
 
 

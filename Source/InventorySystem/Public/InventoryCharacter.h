@@ -75,8 +75,6 @@ private:
 	UPROPERTY()
 	UUserWidget* InventoryWidget;
 
-	bool bShowInventoryWidget = false;
-
 	UPROPERTY()
 	APlayerController* PlayerController;
 };
