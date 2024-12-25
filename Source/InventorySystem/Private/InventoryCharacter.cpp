@@ -4,6 +4,7 @@
 #include "InventoryCharacter.h"
 
 #include "Actor/Money.h"
+#include "Blueprint/UserWidget.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/LocalPlayer.h"
@@ -13,6 +14,7 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "InputActionValue.h"
+#include "Kismet/GameplayStatics.h"
 
 AInventoryCharacter::AInventoryCharacter()
 {
@@ -48,7 +50,8 @@ void AInventoryCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	PlayerController = Cast<APlayerController>(Controller);
+	if (PlayerController)
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
@@ -100,6 +103,30 @@ void AInventoryCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
+void AInventoryCharacter::Inventory()
+{
+	if (InventoryWidgetClass == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("InventoryCharacter: InventoryWidgetClass is nullptr."));
+		return;
+	}
+
+	InventoryWidget = InventoryWidget == nullptr ? CreateWidget<UUserWidget>(GetWorld(), InventoryWidgetClass) : InventoryWidget;
+	if (bShowInventoryWidget)
+	{
+		InventoryWidget->RemoveFromParent();
+		PlayerController->bShowMouseCursor = false;
+		PlayerController->SetInputMode(FInputModeGameOnly());
+	}
+	else
+	{
+		InventoryWidget->AddToViewport();
+		PlayerController->bShowMouseCursor = true;
+		PlayerController->SetInputMode(FInputModeGameAndUI());
+	}
+	bShowInventoryWidget = !bShowInventoryWidget;
+}
+
 
 void AInventoryCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -110,6 +137,7 @@ void AInventoryCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AInventoryCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AInventoryCharacter::Look);
+		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Triggered, this, &AInventoryCharacter::Inventory);
 	}
 	else
 	{
