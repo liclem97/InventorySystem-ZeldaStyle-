@@ -7,6 +7,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/InventoryComponent.h"
 #include "Engine/LocalPlayer.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -15,6 +16,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "InputActionValue.h"
 #include "Kismet/GameplayStatics.h"
+#include "PlayerController/InventoryPC.h"
 
 AInventoryCharacter::AInventoryCharacter()
 {
@@ -44,19 +46,22 @@ AInventoryCharacter::AInventoryCharacter()
 	FollowCamera->bUsePawnControlRotation = false; 
 
 	MouseSensitivity = 0.6f;
+
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
 }
 
 void AInventoryCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	PlayerController = Cast<APlayerController>(Controller);
+	PlayerController = Cast<AInventoryPC>(Controller);
 	if (PlayerController)
-	{
+	{	
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
+		MouseSensitivity = PlayerController->GetMouseSensitivity();
 	}
 
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AInventoryCharacter::OnCapsuleBeginOverlap);
@@ -105,16 +110,12 @@ void AInventoryCharacter::Look(const FInputActionValue& Value)
 
 void AInventoryCharacter::Inventory()
 {
-	if (InventoryWidgetClass == nullptr)
+	if (!IsValid(InventoryComponent))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("InventoryCharacter: InventoryWidgetClass is nullptr."));
+		UE_LOG(LogTemp, Warning, TEXT("InventoryCharacter: Inventory Component is not valid."));
 		return;
 	}
-
-	InventoryWidget = InventoryWidget == nullptr ? CreateWidget<UUserWidget>(GetWorld(), InventoryWidgetClass) : InventoryWidget;
-	InventoryWidget->AddToViewport();
-	PlayerController->bShowMouseCursor = true;
-	PlayerController->SetInputMode(FInputModeUIOnly().SetWidgetToFocus(InventoryWidget->TakeWidget()));
+	InventoryComponent->Inventory();
 }
 
 

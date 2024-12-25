@@ -11,6 +11,8 @@ class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
+class UInventoryComponent;
+class AInventoryPC;
 
 UCLASS()
 class INVENTORYSYSTEM_API AInventoryCharacter : public ACharacter
@@ -21,15 +23,11 @@ public:
 	AInventoryCharacter();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 protected:
 	virtual void BeginPlay() override;
-
-	UFUNCTION()
-	void OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	/** Player Input*/
 	void Move(const FInputActionValue& Value);
@@ -37,7 +35,9 @@ protected:
 	void Inventory();
 	/** end Player Input*/
 
-
+	UFUNCTION()
+	void OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -64,17 +64,13 @@ private:
 	UInputAction* InventoryAction;
 	/** end Input Actions */
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	float MouseSensitivity;
 
 	int32 MoneyAmount;
 
-	UPROPERTY(EditDefaultsOnly, Category = "UI")
-	TSubclassOf<UUserWidget> InventoryWidgetClass;
-
 	UPROPERTY()
-	UUserWidget* InventoryWidget;
+	AInventoryPC* PlayerController;
 
-	UPROPERTY()
-	APlayerController* PlayerController;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+	UInventoryComponent* InventoryComponent;
 };
