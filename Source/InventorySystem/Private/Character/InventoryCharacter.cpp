@@ -1,7 +1,7 @@
-// Copyrlght liclem97.
+// Copyright liclem97.
 
 
-#include "InventoryCharacter.h"
+#include "Character/InventoryCharacter.h"
 
 #include "Actor/Money.h"
 #include "Blueprint/UserWidget.h"

@@ -1,4 +1,4 @@
-// Copyrlght liclem97.
+// Copyright liclem97.
 
 #pragma once
 
