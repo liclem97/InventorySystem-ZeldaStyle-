@@ -17,8 +17,9 @@ class INVENTORYSYSTEM_API UInventoryComponent : public UActorComponent
 public:	
 	UInventoryComponent();
 	void Inventory();
+	void PickupMoney(int32 InMoney);
 
-	FORCEINLINE TSubclassOf<UUserWidget> GetInventoryWidgetClass() const { return InventoryWidgetClass; }
+	FORCEINLINE int32 GetMoneyAmount() { return MoneyAmount; }
 
 protected:
 	virtual void BeginPlay() override;	
@@ -31,9 +32,11 @@ private:
 	UPROPERTY()
 	AInventoryCharacter* PlayerCharacter;
 
-	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 	TSubclassOf<UUserWidget> InventoryWidgetClass;
 
 	UPROPERTY()
 	UUserWidget* InventoryWidget;
+
+	int32 MoneyAmount = 0;
 };

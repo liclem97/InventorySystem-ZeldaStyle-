@@ -25,6 +25,12 @@ void UInventoryComponent::Inventory()
 	}
 }
 
+void UInventoryComponent::PickupMoney(int32 InMoney)
+{
+	MoneyAmount += InMoney;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FText::Format(INVTEXT("{0}"), FText::AsNumber(MoneyAmount)).ToString());
+}
+
 void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();	

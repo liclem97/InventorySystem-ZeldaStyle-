@@ -73,9 +73,10 @@ void AInventoryCharacter::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedC
 	AMoney* Money = Cast<AMoney>(OtherActor);
 	if (Money)
 	{	
-		MoneyAmount = MoneyAmount + Money->GetMoneyAmount();
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, FText::Format(INVTEXT("{0}"), FText::AsNumber(MoneyAmount)).ToString());
-
+		if (IsValid(InventoryComponent))
+		{
+			InventoryComponent->PickupMoney(Money->GetMoneyAmount());
+		}
 		Money->Destroy();
 	}
 }
@@ -121,8 +122,8 @@ void AInventoryCharacter::Inventory()
 
 void AInventoryCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
-
+	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+	{
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 

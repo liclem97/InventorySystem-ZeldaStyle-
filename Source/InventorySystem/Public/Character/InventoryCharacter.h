@@ -66,8 +66,6 @@ private:
 
 	float MouseSensitivity;
 
-	int32 MoneyAmount;
-
 	UPROPERTY()
 	AInventoryPC* PlayerController;
 
