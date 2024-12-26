@@ -23,8 +23,13 @@ public:
 	AInventoryCharacter();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	/** Getter */
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE UInventoryComponent* GetInventoryComponent() const { return InventoryComponent; }
+	/** end Getter */
 
 protected:
 	virtual void BeginPlay() override;

@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "InventoryComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMoneyChanged, int32, ChangedMoney);
+
 class AInventoryPC;
 class AInventoryCharacter;
 
@@ -20,6 +22,9 @@ public:
 	void PickupMoney(int32 InMoney);
 
 	FORCEINLINE int32 GetMoneyAmount() { return MoneyAmount; }
+
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
+	FOnMoneyChanged OnMoneyChanged;
 
 protected:
 	virtual void BeginPlay() override;	
