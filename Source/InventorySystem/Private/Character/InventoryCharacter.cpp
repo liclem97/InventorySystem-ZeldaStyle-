@@ -77,6 +77,10 @@ void AInventoryCharacter::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedC
 		{
 			InventoryComponent->PickupMoney(Money->GetMoneyAmount());
 		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("InventoryCharacter: InventoryComponent is not valid."));
+		}
 		Money->Destroy();
 	}
 }
