@@ -18,21 +18,14 @@ class INVENTORYSYSTEM_API AInventoryPC : public APlayerController
 	GENERATED_BODY()
 	
 public:
-	void Inventory();
-
 	float GetMouseSensitivity() const { return MouseSensitivity; }
 
 protected:
 	virtual void BeginPlay() override;
 
-private:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	float MouseSensitivity;
 
-	UPROPERTY()
-	UUserWidget* InventoryWidget;
-
-	UPROPERTY()
-	UInventoryComponent* InventoryComponent;
+private:
 
 };

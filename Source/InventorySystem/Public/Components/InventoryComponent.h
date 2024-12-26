@@ -22,12 +22,18 @@ public:
 
 protected:
 	virtual void BeginPlay() override;	
+	AController* GetOwnerController();
 
 private:
+	UPROPERTY()
 	AInventoryPC* PlayerController;
 
-	AInventoryCharacter* InventoryCharacter;
+	UPROPERTY()
+	AInventoryCharacter* PlayerCharacter;
 
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<UUserWidget> InventoryWidgetClass;
+
+	UPROPERTY()
+	UUserWidget* InventoryWidget;
 };
