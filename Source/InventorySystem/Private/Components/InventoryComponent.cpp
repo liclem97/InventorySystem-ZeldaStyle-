@@ -31,6 +31,16 @@ void UInventoryComponent::PickupMoney(int32 InMoney)
 	OnMoneyChanged.Broadcast(MoneyAmount);
 }
 
+void UInventoryComponent::IncreaseHealth(float HealthToIncrease)
+{
+	Health += HealthToIncrease;
+}
+
+void UInventoryComponent::DecreaseHealth(float HealthToDecrease)
+{
+	Health -= HealthToDecrease;
+}
+
 void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();	

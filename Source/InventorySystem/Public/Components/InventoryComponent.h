@@ -21,8 +21,11 @@ public:
 	void Inventory();
 	void PickupMoney(int32 InMoney);
 
-	UPROPERTY(BlueprintAssignable, Category = "Inventory")
-	FOnMoneyChanged OnMoneyChanged;
+	UFUNCTION(BlueprintCallable)
+	void IncreaseHealth(float HealthToIncrease);
+
+	UFUNCTION(BlueprintCallable)
+	void DecreaseHealth(float HealthToDecrease);
 
 	FORCEINLINE int32 GetMoneyAmount() { return MoneyAmount; }
 
@@ -31,6 +34,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetMaxHealth() { return MaxHealth; }
+
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
+	FOnMoneyChanged OnMoneyChanged;
 
 protected:
 	virtual void BeginPlay() override;	
