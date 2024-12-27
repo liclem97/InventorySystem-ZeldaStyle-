@@ -21,10 +21,16 @@ public:
 	void Inventory();
 	void PickupMoney(int32 InMoney);
 
-	FORCEINLINE int32 GetMoneyAmount() { return MoneyAmount; }
-
 	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FOnMoneyChanged OnMoneyChanged;
+
+	FORCEINLINE int32 GetMoneyAmount() { return MoneyAmount; }
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE float GetHealth() { return Health; }
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE float GetMaxHealth() { return MaxHealth; }
 
 protected:
 	virtual void BeginPlay() override;	
@@ -44,4 +50,10 @@ private:
 	UUserWidget* InventoryWidget;
 
 	int32 MoneyAmount = 0;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Health")
+	float Health;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Health")
+	float MaxHealth;
 };
