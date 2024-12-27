@@ -7,6 +7,7 @@
 #include "InventoryComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMoneyChanged, int32, ChangedMoney);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthChanged);
 
 class AInventoryPC;
 class AInventoryCharacter;
@@ -38,6 +39,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FOnMoneyChanged OnMoneyChanged;
 
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
+	FOnHealthChanged OnHealthChanged;
+
 protected:
 	virtual void BeginPlay() override;	
 	AController* GetOwnerController();
@@ -54,6 +58,12 @@ private:
 
 	UPROPERTY()
 	UUserWidget* InventoryWidget;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+	TSubclassOf<UUserWidget> HealthBarWidgetClass;
+
+	UPROPERTY()
+	UUserWidget* HealthBarWidget;
 
 	int32 MoneyAmount = 0;
 
