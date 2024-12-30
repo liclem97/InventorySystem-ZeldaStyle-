@@ -50,6 +50,11 @@ AInventoryCharacter::AInventoryCharacter()
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
 }
 
+void AInventoryCharacter::SetOpenedWidget(bool InOpened)
+{
+	bOpenedWidget = InOpened;
+}
+
 void AInventoryCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -86,7 +91,9 @@ void AInventoryCharacter::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedC
 }
 
 void AInventoryCharacter::Move(const FInputActionValue& Value)
-{
+{	
+	if (bOpenedWidget) return;
+
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
@@ -103,7 +110,9 @@ void AInventoryCharacter::Move(const FInputActionValue& Value)
 }
 
 void AInventoryCharacter::Look(const FInputActionValue& Value)
-{
+{	
+	if (bOpenedWidget) return;
+
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
@@ -123,6 +132,44 @@ void AInventoryCharacter::Inventory()
 	InventoryComponent->Inventory();
 }
 
+void AInventoryCharacter::PressedSwordTab()
+{
+	if (!IsValid(InventoryComponent))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("InventoryCharacter: Inventory Component is not valid."));
+		return;
+	}
+	if (bOpenedWidget)
+	{
+		InventoryComponent->OnSwordTabSelected.Broadcast();
+	}
+}
+
+void AInventoryCharacter::PressedShieldTab()
+{
+	if (!IsValid(InventoryComponent))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("InventoryCharacter: Inventory Component is not valid."));
+		return;
+	}
+	if (bOpenedWidget)
+	{
+		InventoryComponent->OnShieldTabSelected.Broadcast();
+	}
+}
+
+void AInventoryCharacter::PressedEatableTab()
+{
+	if (!IsValid(InventoryComponent))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("InventoryCharacter: Inventory Component is not valid."));
+		return;
+	}
+	if (bOpenedWidget)
+	{
+		InventoryComponent->OnEatableTabSelected.Broadcast();
+	}
+}
 
 void AInventoryCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -134,6 +181,9 @@ void AInventoryCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AInventoryCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AInventoryCharacter::Look);
 		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Triggered, this, &AInventoryCharacter::Inventory);
+		EnhancedInputComponent->BindAction(SwordTabAction, ETriggerEvent::Triggered, this, &AInventoryCharacter::PressedSwordTab);
+		EnhancedInputComponent->BindAction(ShieldTabAction, ETriggerEvent::Triggered, this, &AInventoryCharacter::PressedShieldTab);
+		EnhancedInputComponent->BindAction(EatableAction, ETriggerEvent::Triggered, this, &AInventoryCharacter::PressedEatableTab);
 	}
 	else
 	{

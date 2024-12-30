@@ -26,11 +26,16 @@ public:
 	/** Getter */
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	FORCEINLINE bool GetOpenedWidget() const { return bOpenedWidget; }
 
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE UInventoryComponent* GetInventoryComponent() const { return InventoryComponent; }
+	FORCEINLINE UInventoryComponent* GetInventoryComponent() const { return InventoryComponent; }	
 	/** end Getter */
-
+	
+	/** Setter */
+	UFUNCTION(BlueprintCallable)
+	void SetOpenedWidget(bool InOpened);
+	/** end Setter */
 protected:
 	virtual void BeginPlay() override;
 
@@ -38,6 +43,9 @@ protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Inventory();
+	void PressedSwordTab();
+	void PressedShieldTab();
+	void PressedEatableTab();
 	/** end Player Input*/
 
 	UFUNCTION()
@@ -67,6 +75,15 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* InventoryAction;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* SwordTabAction;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* ShieldTabAction;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* EatableAction;
 	/** end Input Actions */
 
 	float MouseSensitivity;
@@ -76,4 +93,6 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Inventory)
 	UInventoryComponent* InventoryComponent;
+
+	bool bOpenedWidget = false;
 };

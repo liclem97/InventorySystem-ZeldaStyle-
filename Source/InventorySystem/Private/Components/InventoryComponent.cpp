@@ -15,13 +15,23 @@ UInventoryComponent::UInventoryComponent()
 }
 
 void UInventoryComponent::Inventory()
-{
-	if (InventoryWidget)
+{	
+	PlayerCharacter = PlayerCharacter == nullptr ? Cast<AInventoryCharacter>(GetOwner()) : PlayerCharacter;
+	if (PlayerCharacter && InventoryWidget)
 	{
-		OnMoneyChanged.Broadcast(MoneyAmount);
-		InventoryWidget->AddToViewport();
-		PlayerController->bShowMouseCursor = true;
-		PlayerController->SetInputMode(FInputModeUIOnly().SetWidgetToFocus(InventoryWidget->TakeWidget()));
+		if (PlayerCharacter->GetOpenedWidget()) // true
+		{
+			PlayerCharacter->SetOpenedWidget(false);
+			InventoryWidget->RemoveFromParent();
+			PlayerController->bShowMouseCursor = false;
+		}
+		else // false
+		{
+			PlayerCharacter->SetOpenedWidget(true);
+			OnMoneyChanged.Broadcast(MoneyAmount);
+			InventoryWidget->AddToViewport();
+			PlayerController->bShowMouseCursor = true;
+		}
 	}	
 }
 

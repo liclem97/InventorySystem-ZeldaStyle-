@@ -8,6 +8,9 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMoneyChanged, int32, ChangedMoney);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthChanged);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSwordTabSelected);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnShieldTabSelected);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEatableTabSelected);
 
 class AInventoryPC;
 class AInventoryCharacter;
@@ -31,16 +34,25 @@ public:
 	FORCEINLINE int32 GetMoneyAmount() { return MoneyAmount; }
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE float GetHealth() { return Health; }
+	FORCEINLINE float GetHealth() const { return Health; }
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE float GetMaxHealth() { return MaxHealth; }
+	FORCEINLINE float GetMaxHealth() const { return MaxHealth; }
 
 	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FOnMoneyChanged OnMoneyChanged;
 
 	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FOnHealthChanged OnHealthChanged;
+
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
+	FOnSwordTabSelected OnSwordTabSelected;
+
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
+	FOnShieldTabSelected OnShieldTabSelected;
+
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
+	FOnEatableTabSelected OnEatableTabSelected;
 
 protected:
 	virtual void BeginPlay() override;	
@@ -72,4 +84,5 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	float MaxHealth;
+
 };
