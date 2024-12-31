@@ -7,11 +7,19 @@
 #include "Character/InventoryCharacter.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "PlayerController/InventoryPC.h"
 
 UInventoryComponent::UInventoryComponent()
-{
+{	
+	PrimaryComponentTick.bCanEverTick = true;
+	ItemTraceRange = 300.f;
+}
 
+void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	TraceItemToPickUp();
 }
 
 void UInventoryComponent::Inventory()
@@ -39,6 +47,32 @@ void UInventoryComponent::PickupMoney(int32 InMoney)
 {
 	MoneyAmount += InMoney;
 	OnMoneyChanged.Broadcast(MoneyAmount);
+}
+
+void UInventoryComponent::TraceItemToPickUp()
+{
+	PlayerCharacter = PlayerCharacter == nullptr ? Cast<AInventoryCharacter>(GetOwner()) : PlayerCharacter;
+
+	FVector Start = PlayerCharacter->GetActorLocation() - FVector(0, 0, 60.f);
+	FVector End = (PlayerCharacter->GetActorForwardVector() * ItemTraceRange) + Start;
+
+	FHitResult HitResult;
+	TArray<AActor*> ActorsToIgnore;
+	ActorsToIgnore.Add(GetOwner());
+	ETraceTypeQuery Channel = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_Visibility);
+
+	bool bHit = UKismetSystemLibrary::SphereTraceSingle(
+		this,
+		Start,
+		End,
+		30.f,
+		Channel,
+		false,
+		ActorsToIgnore,
+		EDrawDebugTrace::Type::ForOneFrame,
+		HitResult,
+		true
+	);
 }
 
 void UInventoryComponent::IncreaseHealth(float HealthToIncrease)

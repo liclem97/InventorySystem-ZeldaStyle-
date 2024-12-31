@@ -22,8 +22,10 @@ class INVENTORYSYSTEM_API UInventoryComponent : public UActorComponent
 
 public:	
 	UInventoryComponent();
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
 	void Inventory();
 	void PickupMoney(int32 InMoney);
+	void TraceItemToPickUp();
 
 	UFUNCTION(BlueprintCallable)
 	void IncreaseHealth(float HealthToIncrease);
@@ -31,6 +33,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DecreaseHealth(float HealthToDecrease);
 
+	/** Getter */
 	FORCEINLINE int32 GetMoneyAmount() { return MoneyAmount; }
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
@@ -38,7 +41,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetMaxHealth() const { return MaxHealth; }
+	/** end Getter */
 
+	/** Delegate */
 	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FOnMoneyChanged OnMoneyChanged;
 
@@ -53,6 +58,7 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FOnEatableTabSelected OnEatableTabSelected;
+	/** end Delegate */
 
 protected:
 	virtual void BeginPlay() override;	
@@ -84,5 +90,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	float MaxHealth;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Health")
+	float ItemTraceRange;
 
 };
