@@ -11,6 +11,8 @@ AItem::AItem()
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	SetRootComponent(Mesh);
+	Mesh->SetSimulatePhysics(true);
+	Mesh->SetMassOverrideInKg(NAME_None, 25.f);
 }
 
 void AItem::OnConstruction(const FTransform& Transform)
@@ -26,10 +28,6 @@ void AItem::OnConstruction(const FTransform& Transform)
 
 	if (RowData)
 	{
-		/*MoneyComponent->SetStaticMesh(RowData->Mesh);
-		MoneyType = RowData->Name;
-		MoneyAmount = RowData->Amount;*/
-
 		Mesh->SetStaticMesh(RowData->Mesh);
 	}
 	else
