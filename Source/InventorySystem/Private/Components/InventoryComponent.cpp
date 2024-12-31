@@ -3,6 +3,7 @@
 
 #include "Components/InventoryComponent.h"
 
+#include "Actor/Item.h"
 #include "Blueprint/UserWidget.h"
 #include "Character/InventoryCharacter.h"
 #include "EnhancedInputComponent.h"
@@ -19,7 +20,10 @@ UInventoryComponent::UInventoryComponent()
 void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	TraceItemToPickUp();
+	if (TraceItemToPickUp().bFoundItem)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, TraceItemToPickUp().Item.ItemID.RowName.ToString());
+	}
 }
 
 void UInventoryComponent::Inventory()
@@ -49,9 +53,10 @@ void UInventoryComponent::PickupMoney(int32 InMoney)
 	OnMoneyChanged.Broadcast(MoneyAmount);
 }
 
-void UInventoryComponent::TraceItemToPickUp()
+FItemSearchResult UInventoryComponent::TraceItemToPickUp()
 {
 	PlayerCharacter = PlayerCharacter == nullptr ? Cast<AInventoryCharacter>(GetOwner()) : PlayerCharacter;
+	FItemSearchResult Result;
 
 	FVector Start = PlayerCharacter->GetActorLocation() - FVector(0, 0, 60.f);
 	FVector End = (PlayerCharacter->GetActorForwardVector() * ItemTraceRange) + Start;
@@ -73,6 +78,17 @@ void UInventoryComponent::TraceItemToPickUp()
 		HitResult,
 		true
 	);
+
+	if (bHit)
+	{
+		if (AItem* CastedItem = Cast<AItem>(HitResult.GetActor()))
+		{
+			Result.Item = CastedItem->GetItemData();
+			Result.bFoundItem = true;
+			Result.ItemActor = CastedItem;
+		}
+	}
+	return Result;
 }
 
 void UInventoryComponent::IncreaseHealth(float HealthToIncrease)

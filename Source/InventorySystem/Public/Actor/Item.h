@@ -16,6 +16,9 @@ public:
 	AItem();
 	virtual void OnConstruction(const FTransform& Transform) override;
 
+	FORCEINLINE FName GetItemName() const { return ItemName; }
+	FORCEINLINE FSlotStruct GetItemData() const { return ItemData; }
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -28,5 +31,8 @@ protected:
 private:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UStaticMeshComponent> Mesh;
+
+	UPROPERTY()
+	FName ItemName;
 
 };

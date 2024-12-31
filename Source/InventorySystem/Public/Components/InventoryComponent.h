@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Inventory.h"
 #include "InventoryComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMoneyChanged, int32, ChangedMoney);
@@ -15,6 +16,26 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEatableTabSelected);
 class AInventoryPC;
 class AInventoryCharacter;
 
+USTRUCT(BlueprintType)
+struct FItemSearchResult
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite)
+	FSlotStruct Item;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool bFoundItem;
+
+	UPROPERTY(BlueprintReadWrite)
+	AActor* ItemActor;
+
+	FItemSearchResult()
+		: bFoundItem(false)
+		, ItemActor(nullptr)
+	{}
+};
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class INVENTORYSYSTEM_API UInventoryComponent : public UActorComponent
 {
@@ -25,7 +46,7 @@ public:
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
 	void Inventory();
 	void PickupMoney(int32 InMoney);
-	void TraceItemToPickUp();
+	FItemSearchResult TraceItemToPickUp();
 
 	UFUNCTION(BlueprintCallable)
 	void IncreaseHealth(float HealthToIncrease);
@@ -94,4 +115,5 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	float ItemTraceRange;
 
+	FItemSearchResult FoundItem;
 };
