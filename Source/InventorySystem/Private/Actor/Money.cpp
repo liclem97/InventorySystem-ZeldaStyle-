@@ -4,6 +4,7 @@
 #include "Actor/Money.h"
 
 #include "Components/StaticMeshComponent.h"
+#include "Inventory.h"
 
 AMoney::AMoney()
 {
@@ -17,7 +18,7 @@ void AMoney::OnConstruction(const FTransform& Transform)
 {
 	if (!IsValid(MoneyDataTable))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Money : Money DataTable is nullptr"));
+		UE_LOG(LogTemp, Warning, TEXT("Money: Money DataTable is not vaild."));
 		return;
 	}
 
@@ -32,7 +33,7 @@ void AMoney::OnConstruction(const FTransform& Transform)
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Money : Can't find RowData."));
+		UE_LOG(LogTemp, Warning, TEXT("Money: Can't find RowData."));
 	}
 }
 

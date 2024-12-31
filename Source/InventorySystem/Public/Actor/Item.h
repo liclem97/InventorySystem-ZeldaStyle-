@@ -4,34 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Engine/DataTable.h"
+#include "Inventory.h"
 #include "Item.generated.h"
-
-class UTexture2D;
-
-USTRUCT(BlueprintType)
-struct FItemStruct : public FTableRowBase
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
-	FText Name;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
-	FText Description;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
-	UTexture2D* Thumbnail;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
-	int32 StackSize;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
-	float Power;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
-	TObjectPtr<UStaticMesh> Mesh;
-};
 
 UCLASS()
 class INVENTORYSYSTEM_API AItem : public AActor
@@ -40,9 +14,16 @@ class INVENTORYSYSTEM_API AItem : public AActor
 	
 public:	
 	AItem();
+	virtual void OnConstruction(const FTransform& Transform) override;
 
 protected:
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Data")
+	UDataTable* ItemDataTable;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	FSlotStruct ItemData;
 
 private:
 	UPROPERTY(EditAnywhere)
