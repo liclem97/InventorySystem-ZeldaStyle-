@@ -15,6 +15,51 @@ UInventoryComponent::UInventoryComponent()
 {	
 	PrimaryComponentTick.bCanEverTick = true;
 	ItemTraceRange = 300.f;
+
+	SizeOfSwords = 5;
+	SizeOfShields = 8;
+	SizeOfEatables = 7;
+}
+
+void UInventoryComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+	InitializeWidgets();
+	ResizeInventory();
+}
+
+void UInventoryComponent::InitializeWidgets()
+{
+	PlayerController = PlayerController == nullptr ? Cast<AInventoryPC>(GetOwnerController()) : PlayerController;
+	if (PlayerController)
+	{
+		if (IsValid(InventoryWidgetClass))
+		{
+			InventoryWidget = InventoryWidget == nullptr ? CreateWidget<UUserWidget>(GetWorld(), InventoryWidgetClass) : InventoryWidget;
+
+			// To construct InventoryWidget.
+			InventoryWidget->AddToViewport();
+			InventoryWidget->RemoveFromParent();
+		}
+		if (IsValid(HealthBarWidgetClass))
+		{
+			HealthBarWidget = HealthBarWidget == nullptr ? CreateWidget<UUserWidget>(GetWorld(), HealthBarWidgetClass) : HealthBarWidget;
+			HealthBarWidget->SetPositionInViewport(FVector2D(5.f, 5.f));
+			HealthBarWidget->AddToViewport();
+		}
+		if (IsValid(InteractWidgetClass))
+		{
+			InteractWidget = InteractWidget == nullptr ? CreateWidget<UUserWidget>(GetWorld(), InteractWidgetClass) : InteractWidget;
+		}
+	}
+}
+
+void UInventoryComponent::ResizeInventory()
+{
+	AllItem.Swords.SetNum(SizeOfSwords);
+	AllItem.Shields.SetNum(SizeOfShields);
+	AllItem.Eatables.SetNum(SizeOfEatables);
 }
 
 void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -107,13 +152,6 @@ void UInventoryComponent::DecreaseHealth(float HealthToDecrease)
 	OnHealthChanged.Broadcast();
 }
 
-void UInventoryComponent::BeginPlay()
-{
-	Super::BeginPlay();	
-
-	InitializeWidgets();
-}
-
 AController* UInventoryComponent::GetOwnerController()
 {
 	PlayerCharacter = PlayerCharacter == nullptr ? Cast<AInventoryCharacter>(GetOwner()) : PlayerCharacter;
@@ -122,30 +160,4 @@ AController* UInventoryComponent::GetOwnerController()
 		return PlayerCharacter->GetController();
 	}
 	return nullptr;
-}
-
-void UInventoryComponent::InitializeWidgets()
-{
-	PlayerController = PlayerController == nullptr ? Cast<AInventoryPC>(GetOwnerController()) : PlayerController;
-	if (PlayerController)
-	{
-		if (IsValid(InventoryWidgetClass))
-		{
-			InventoryWidget = InventoryWidget == nullptr ? CreateWidget<UUserWidget>(GetWorld(), InventoryWidgetClass) : InventoryWidget;
-
-			// To construct InventoryWidget.
-			InventoryWidget->AddToViewport();
-			InventoryWidget->RemoveFromParent();
-		}
-		if (IsValid(HealthBarWidgetClass))
-		{
-			HealthBarWidget = HealthBarWidget == nullptr ? CreateWidget<UUserWidget>(GetWorld(), HealthBarWidgetClass) : HealthBarWidget;
-			HealthBarWidget->SetPositionInViewport(FVector2D(5.f, 5.f));
-			HealthBarWidget->AddToViewport();
-		}
-		if (IsValid(InteractWidgetClass))
-		{
-			InteractWidget = InteractWidget == nullptr ? CreateWidget<UUserWidget>(GetWorld(), InteractWidgetClass) : InteractWidget;
-		}
-	}
 }

@@ -51,6 +51,21 @@ struct FItemStruct : public FTableRowBase
 };
 
 USTRUCT(BlueprintType)
+struct FAllItemStruct : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TArray<FSlotStruct> Swords;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TArray<FSlotStruct> Shields;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TArray<FSlotStruct> Eatables;
+};
+
+USTRUCT(BlueprintType)
 struct FMoneyStruct : public FTableRowBase
 {
 	GENERATED_BODY()
@@ -64,3 +79,4 @@ struct FMoneyStruct : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	UStaticMesh* Mesh;
 };
+

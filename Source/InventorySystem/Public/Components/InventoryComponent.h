@@ -85,6 +85,7 @@ protected:
 	virtual void BeginPlay() override;	
 	AController* GetOwnerController();
 	void InitializeWidgets();
+	void ResizeInventory();
 
 private:
 	UPROPERTY()
@@ -125,4 +126,16 @@ private:
 	float ItemTraceRange;
 
 	FItemSearchResult FoundItem;
+
+	UPROPERTY(EditAnywhere, Category = "Inventory")
+	FAllItemStruct AllItem;
+
+	UPROPERTY(EditAnywhere, Category = "Inventory")
+	int32 SizeOfSwords;
+
+	UPROPERTY(EditAnywhere, Category = "Inventory")
+	int32 SizeOfShields;
+
+	UPROPERTY(EditAnywhere, Category = "Inventory")
+	int32 SizeOfEatables;
 };
