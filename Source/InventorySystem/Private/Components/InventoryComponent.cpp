@@ -20,9 +20,13 @@ UInventoryComponent::UInventoryComponent()
 void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	if (TraceItemToPickUp().bFoundItem)
+	if (TraceItemToPickUp().bFoundItem && InteractWidget)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, TraceItemToPickUp().Item.ItemID.RowName.ToString());
+		InteractWidget->AddToViewport();
+	}
+	else if (!TraceItemToPickUp().bFoundItem)
+	{
+		InteractWidget->RemoveFromParent();
 	}
 }
 
@@ -107,9 +111,24 @@ void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();	
 
+	InitializeWidgets();
+}
+
+AController* UInventoryComponent::GetOwnerController()
+{
+	PlayerCharacter = PlayerCharacter == nullptr ? Cast<AInventoryCharacter>(GetOwner()) : PlayerCharacter;
+	if (PlayerCharacter)
+	{
+		return PlayerCharacter->GetController();
+	}
+	return nullptr;
+}
+
+void UInventoryComponent::InitializeWidgets()
+{
 	PlayerController = PlayerController == nullptr ? Cast<AInventoryPC>(GetOwnerController()) : PlayerController;
 	if (PlayerController)
-	{	
+	{
 		if (IsValid(InventoryWidgetClass))
 		{
 			InventoryWidget = InventoryWidget == nullptr ? CreateWidget<UUserWidget>(GetWorld(), InventoryWidgetClass) : InventoryWidget;
@@ -124,16 +143,9 @@ void UInventoryComponent::BeginPlay()
 			HealthBarWidget->SetPositionInViewport(FVector2D(5.f, 5.f));
 			HealthBarWidget->AddToViewport();
 		}
+		if (IsValid(InteractWidgetClass))
+		{
+			InteractWidget = InteractWidget == nullptr ? CreateWidget<UUserWidget>(GetWorld(), InteractWidgetClass) : InteractWidget;
+		}
 	}
-
-}
-
-AController* UInventoryComponent::GetOwnerController()
-{
-	PlayerCharacter = PlayerCharacter == nullptr ? Cast<AInventoryCharacter>(GetOwner()) : PlayerCharacter;
-	if (PlayerCharacter)
-	{
-		return PlayerCharacter->GetController();
-	}
-	return nullptr;
 }

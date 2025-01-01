@@ -84,6 +84,7 @@ public:
 protected:
 	virtual void BeginPlay() override;	
 	AController* GetOwnerController();
+	void InitializeWidgets();
 
 private:
 	UPROPERTY()
@@ -92,6 +93,7 @@ private:
 	UPROPERTY()
 	AInventoryCharacter* PlayerCharacter;
 
+	/** Widgets */
 	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 	TSubclassOf<UUserWidget> InventoryWidgetClass;
 
@@ -103,6 +105,13 @@ private:
 
 	UPROPERTY()
 	UUserWidget* HealthBarWidget;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+	TSubclassOf<UUserWidget> InteractWidgetClass;
+
+	UPROPERTY()
+	UUserWidget* InteractWidget;
+	/** end Widgets */
 
 	int32 MoneyAmount = 0;
 
