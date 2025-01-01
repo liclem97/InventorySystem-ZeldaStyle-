@@ -14,7 +14,7 @@
 UInventoryComponent::UInventoryComponent()
 {	
 	PrimaryComponentTick.bCanEverTick = true;
-	ItemTraceRange = 300.f;
+	ItemTraceRange = 120.f;
 
 	SizeOfSwords = 5;
 	SizeOfShields = 8;
@@ -138,6 +138,22 @@ FItemSearchResult UInventoryComponent::TraceItemToPickUp()
 		}
 	}
 	return Result;
+}
+
+void UInventoryComponent::AddItemToInventory(FSlotStruct InItem)
+{
+	switch(InItem.ItemType)
+	{
+	case EItemTypes::Sword:
+		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Black, FString("Sword"));
+		break;
+	case EItemTypes::Shield:
+		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Blue, FString("Shield"));
+		break;
+	case EItemTypes::Eatable:
+		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, FString("Eatable"));
+		break;
+	}
 }
 
 void UInventoryComponent::IncreaseHealth(float HealthToIncrease)

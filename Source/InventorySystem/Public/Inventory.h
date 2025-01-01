@@ -48,6 +48,9 @@ struct FItemStruct : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	TObjectPtr<UStaticMesh> Mesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	EItemTypes ItemType;
 };
 
 USTRUCT(BlueprintType)

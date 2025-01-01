@@ -34,5 +34,4 @@ private:
 
 	UPROPERTY()
 	FName ItemName;
-
 };

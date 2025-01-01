@@ -171,6 +171,21 @@ void AInventoryCharacter::PressedEatableTab()
 	}
 }
 
+void AInventoryCharacter::Interact()
+{
+	if (!IsValid(InventoryComponent))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("InventoryCharacter: Inventory Component is not valid."));
+		return;
+	}
+	FItemSearchResult ItemResult = InventoryComponent->TraceItemToPickUp();
+	if (ItemResult.bFoundItem)
+	{	
+		InventoryComponent->AddItemToInventory(ItemResult.Item);
+		ItemResult.ItemActor->Destroy();
+	}
+}
+
 void AInventoryCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
@@ -184,6 +199,7 @@ void AInventoryCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 		EnhancedInputComponent->BindAction(SwordTabAction, ETriggerEvent::Triggered, this, &AInventoryCharacter::PressedSwordTab);
 		EnhancedInputComponent->BindAction(ShieldTabAction, ETriggerEvent::Triggered, this, &AInventoryCharacter::PressedShieldTab);
 		EnhancedInputComponent->BindAction(EatableAction, ETriggerEvent::Triggered, this, &AInventoryCharacter::PressedEatableTab);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AInventoryCharacter::Interact);
 	}
 	else
 	{

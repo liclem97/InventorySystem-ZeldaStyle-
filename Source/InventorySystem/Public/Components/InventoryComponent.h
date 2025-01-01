@@ -46,7 +46,12 @@ public:
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
 	void Inventory();
 	void PickupMoney(int32 InMoney);
+
+	UFUNCTION(Category = "Inventory")
 	FItemSearchResult TraceItemToPickUp();
+
+	UFUNCTION(Category = "Inventory")
+	void AddItemToInventory(FSlotStruct InItem);
 
 	UFUNCTION(BlueprintCallable)
 	void IncreaseHealth(float HealthToIncrease);

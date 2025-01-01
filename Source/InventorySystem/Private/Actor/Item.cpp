@@ -30,6 +30,7 @@ void AItem::OnConstruction(const FTransform& Transform)
 	{
 		Mesh->SetStaticMesh(RowData->Mesh);
 		ItemName = FName(*RowData->Name.ToString());
+		ItemData.ItemType = RowData->ItemType;
 	}
 	else
 	{

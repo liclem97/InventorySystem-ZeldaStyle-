@@ -46,6 +46,7 @@ protected:
 	void PressedSwordTab();
 	void PressedShieldTab();
 	void PressedEatableTab();
+	void Interact();
 	/** end Player Input*/
 
 	UFUNCTION()
@@ -84,6 +85,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* EatableAction;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* InteractAction;
 	/** end Input Actions */
 
 	float MouseSensitivity;
