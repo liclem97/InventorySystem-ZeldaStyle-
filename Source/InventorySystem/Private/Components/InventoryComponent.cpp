@@ -157,13 +157,10 @@ bool UInventoryComponent::AddItemToInventory(FSlotStruct InItem)
 		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Blue, FString("Shield"));
 		break;
 	case EItemTypes::Eatable:
-		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, FString("Eatable"));
-
 		int32 Index = 0;
 		for (FSlotStruct InEatable : AllItem.Eatables)
-		{	
-			// Already has a Item.
-			// Inventory Array Slot == Picked up Item.
+		{				
+			// 아이템을 이미 갖고있는 경우.
 			if (InEatable.ItemID.RowName == InItem.ItemID.RowName)
 			{
 				FString ContextString;
@@ -175,15 +172,18 @@ bool UInventoryComponent::AddItemToInventory(FSlotStruct InItem)
 					AllItem.Eatables[Index].ItemID = InItem.ItemID;
 					AllItem.Eatables[Index].Quantity = InEatable.Quantity + InItem.Quantity;
 					AllItem.Eatables[Index].ItemType = InEatable.ItemType;
-
-					GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, FString("Added to Inventory."));
+					
 					return true;
 				}
-				else return false;
+			}
+			// 새로운 아이템인 경우.
+			if (InEatable.Quantity == 0)
+			{	
+				AllItem.Eatables[Index] = InItem;
+				return true;
 			}
 			Index++;
-		}
-		break; 
+		}				
 	}
 	return false;
 }
