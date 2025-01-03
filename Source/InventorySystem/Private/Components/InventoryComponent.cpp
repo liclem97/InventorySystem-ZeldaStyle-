@@ -140,50 +140,54 @@ FItemSearchResult UInventoryComponent::TraceItemToPickUp()
 	return Result;
 }
 
-bool UInventoryComponent::AddItemToInventory(FSlotStruct InItem)
-{	
+bool UInventoryComponent::AddItemToInventory(const FSlotStruct& InItem)
+{
 	if (!IsValid(ItemDataTable))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("InventoryComponent: Item DataTable is not valid."));
 		return false;
 	}
 
-	switch(InItem.ItemType)
+	switch (InItem.ItemType)
 	{
 	case EItemTypes::Sword:
-		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Black, FString("Sword"));
+		if (AddItemToArray(AllItem.Swords, InItem)) return true;
 		break;
 	case EItemTypes::Shield:
-		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Blue, FString("Shield"));
+		if (AddItemToArray(AllItem.Shields, InItem)) return true;
 		break;
 	case EItemTypes::Eatable:
-		int32 Index = 0;
-		for (FSlotStruct InEatable : AllItem.Eatables)
-		{				
-			// 아이템을 이미 갖고있는 경우.
-			if (InEatable.ItemID.RowName == InItem.ItemID.RowName)
-			{
-				FString ContextString;
-				FItemStruct* RowData = ItemDataTable->FindRow<FItemStruct>(InItem.ItemID.RowName, ContextString);
+		if (AddItemToArray(AllItem.Eatables, InItem)) return true;
+		break;		
+	}
+	return false;
+}
 
-				// 아이템 최대 소지 개수 >= 갖고 있는 아이템의 개수 + 주운 아이템의 개수.
-				if (RowData->StackSize >= InEatable.Quantity + InItem.Quantity)
-				{
-					AllItem.Eatables[Index].ItemID = InItem.ItemID;
-					AllItem.Eatables[Index].Quantity = InEatable.Quantity + InItem.Quantity;
-					AllItem.Eatables[Index].ItemType = InEatable.ItemType;
-					
-					return true;
-				}
-			}
-			// 새로운 아이템인 경우.
-			if (InEatable.Quantity == 0)
-			{	
-				AllItem.Eatables[Index] = InItem;
+bool UInventoryComponent::AddItemToArray(TArray<FSlotStruct>& ItemArray, const FSlotStruct& InItem)
+{	
+	int32 Index = 0;
+	for (FSlotStruct ItemToAdd : ItemArray)
+	{
+		if (ItemToAdd.ItemID.RowName == InItem.ItemID.RowName)
+		{
+			FString ContextString;
+			FItemStruct* RowData = ItemDataTable->FindRow<FItemStruct>(InItem.ItemID.RowName, ContextString);
+
+			if (RowData->StackSize >= ItemToAdd.Quantity + InItem.Quantity)
+			{
+				ItemArray[Index].ItemID = InItem.ItemID;
+				ItemArray[Index].Quantity = ItemToAdd.Quantity + InItem.Quantity;
+				ItemArray[Index].ItemType = ItemToAdd.ItemType;
+
 				return true;
 			}
-			Index++;
-		}				
+		}
+		else if (ItemToAdd.Quantity == 0)
+		{
+			ItemArray[Index] = InItem;
+			return true;
+		}
+		Index++;
 	}
 	return false;
 }

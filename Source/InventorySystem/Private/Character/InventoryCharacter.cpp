@@ -182,7 +182,7 @@ void AInventoryCharacter::Interact()
 	if (ItemResult.bFoundItem)
 	{	
 		if (InventoryComponent->AddItemToInventory(ItemResult.Item))
-		{
+		{	
 			ItemResult.ItemActor->Destroy();
 		}
 	}
