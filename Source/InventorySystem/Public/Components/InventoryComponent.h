@@ -143,4 +143,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Inventory")
 	int32 SizeOfEatables;
+
+	UPROPERTY(EditDefaultsOnly, Category = "DataTable")
+	UDataTable* ItemDataTable;
 };

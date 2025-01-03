@@ -141,7 +141,13 @@ FItemSearchResult UInventoryComponent::TraceItemToPickUp()
 }
 
 void UInventoryComponent::AddItemToInventory(FSlotStruct InItem)
-{
+{	
+	if (!IsValid(ItemDataTable))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("InventoryComponent: Item DataTable is not valid."));
+		return;
+	}
+
 	switch(InItem.ItemType)
 	{
 	case EItemTypes::Sword:
@@ -152,7 +158,30 @@ void UInventoryComponent::AddItemToInventory(FSlotStruct InItem)
 		break;
 	case EItemTypes::Eatable:
 		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, FString("Eatable"));
-		break;
+
+		int32 Index = 0;
+		for (FSlotStruct InEatable : AllItem.Eatables)
+		{	
+			// Already has a Item.
+			// Inventory Array Slot == Picked up Item.
+			if (InEatable.ItemID.RowName == InItem.ItemID.RowName)
+			{
+				FString ContextString;
+				FItemStruct* RowData = ItemDataTable->FindRow<FItemStruct>(InItem.ItemID.RowName, ContextString);
+
+				// 아이템 최대 소지 개수 >= 갖고 있는 아이템의 개수 + 주운 아이템의 개수.
+				if (RowData->StackSize >= InEatable.Quantity + InItem.Quantity)
+				{
+					AllItem.Eatables[Index].ItemID = InItem.ItemID;
+					AllItem.Eatables[Index].Quantity = InEatable.Quantity + InItem.Quantity;
+					AllItem.Eatables[Index].ItemType = InEatable.ItemType;
+
+					GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, FString("Added to Inventory."));
+				}
+			}
+			Index++;
+		}
+		break; 
 	}
 }
 
