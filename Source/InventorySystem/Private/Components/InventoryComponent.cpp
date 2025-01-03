@@ -140,12 +140,12 @@ FItemSearchResult UInventoryComponent::TraceItemToPickUp()
 	return Result;
 }
 
-void UInventoryComponent::AddItemToInventory(FSlotStruct InItem)
+bool UInventoryComponent::AddItemToInventory(FSlotStruct InItem)
 {	
 	if (!IsValid(ItemDataTable))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("InventoryComponent: Item DataTable is not valid."));
-		return;
+		return false;
 	}
 
 	switch(InItem.ItemType)
@@ -177,12 +177,15 @@ void UInventoryComponent::AddItemToInventory(FSlotStruct InItem)
 					AllItem.Eatables[Index].ItemType = InEatable.ItemType;
 
 					GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, FString("Added to Inventory."));
+					return true;
 				}
+				else return false;
 			}
 			Index++;
 		}
 		break; 
 	}
+	return false;
 }
 
 void UInventoryComponent::IncreaseHealth(float HealthToIncrease)

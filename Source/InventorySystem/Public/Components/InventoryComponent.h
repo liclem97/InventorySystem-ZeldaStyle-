@@ -51,7 +51,7 @@ public:
 	FItemSearchResult TraceItemToPickUp();
 
 	UFUNCTION(Category = "Inventory")
-	void AddItemToInventory(FSlotStruct InItem);
+	bool AddItemToInventory(FSlotStruct InItem);
 
 	UFUNCTION(BlueprintCallable)
 	void IncreaseHealth(float HealthToIncrease);

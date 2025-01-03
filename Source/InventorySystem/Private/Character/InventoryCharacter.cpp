@@ -181,8 +181,10 @@ void AInventoryCharacter::Interact()
 	FItemSearchResult ItemResult = InventoryComponent->TraceItemToPickUp();
 	if (ItemResult.bFoundItem)
 	{	
-		InventoryComponent->AddItemToInventory(ItemResult.Item);
-		ItemResult.ItemActor->Destroy();
+		if (InventoryComponent->AddItemToInventory(ItemResult.Item))
+		{
+			ItemResult.ItemActor->Destroy();
+		}
 	}
 }
 
