@@ -27,6 +27,7 @@ void UInventoryComponent::BeginPlay()
 
 	InitializeWidgets();
 	ResizeInventory();
+	OnInventoryUpdated.Broadcast(AllItem);
 }
 
 void UInventoryComponent::InitializeWidgets()

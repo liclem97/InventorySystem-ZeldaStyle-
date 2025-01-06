@@ -8,6 +8,7 @@
 #include "InventoryComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMoneyChanged, int32, ChangedMoney);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInventoryUpdated, FAllItemStruct, AllItems);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthChanged);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSwordTabSelected);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnShieldTabSelected);
@@ -62,18 +63,23 @@ public:
 	void DecreaseHealth(float HealthToDecrease);
 
 	/** Getter */
-	FORCEINLINE int32 GetMoneyAmount() { return MoneyAmount; }
+	FORCEINLINE int32 GetMoneyAmount() const { return MoneyAmount; }
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetHealth() const { return Health; }
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetMaxHealth() const { return MaxHealth; }
+
+	FORCEINLINE FAllItemStruct GetAllItem() const { return AllItem; }
 	/** end Getter */
 
 	/** Delegate */
 	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FOnMoneyChanged OnMoneyChanged;
+
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
+	FOnInventoryUpdated OnInventoryUpdated;
 
 	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FOnHealthChanged OnHealthChanged;

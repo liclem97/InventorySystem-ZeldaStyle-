@@ -184,6 +184,7 @@ void AInventoryCharacter::Interact()
 		if (InventoryComponent->AddItemToInventory(ItemResult.Item))
 		{	
 			ItemResult.ItemActor->Destroy();
+			InventoryComponent->OnInventoryUpdated.Broadcast(InventoryComponent->GetAllItem());
 		}
 	}
 }
