@@ -7,13 +7,6 @@
 #include "Inventory.h"
 #include "InventoryComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMoneyChanged, int32, ChangedMoney);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInventoryUpdated, FAllItemStruct, AllItems);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthChanged);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSwordTabSelected);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnShieldTabSelected);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEatableTabSelected);
-
 class AInventoryPC;
 class AInventoryCharacter;
 
@@ -36,6 +29,14 @@ struct FItemSearchResult
 		, ItemActor(nullptr)
 	{}
 };
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnItemSearchResult, FItemSearchResult, SearchedItem);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMoneyChanged, int32, ChangedMoney);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInventoryUpdated, FAllItemStruct, AllItems);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthChanged);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSwordTabSelected);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnShieldTabSelected);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEatableTabSelected);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class INVENTORYSYSTEM_API UInventoryComponent : public UActorComponent
@@ -72,6 +73,9 @@ public:
 	FORCEINLINE float GetMaxHealth() const { return MaxHealth; }
 
 	FORCEINLINE FAllItemStruct GetAllItem() const { return AllItem; }
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UUserWidget* GetInventoryWidget();
 	/** end Getter */
 
 	/** Delegate */
@@ -92,6 +96,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FOnEatableTabSelected OnEatableTabSelected;
+
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
+	FOnItemSearchResult OnItemSearchResult;
 	/** end Delegate */
 
 protected:

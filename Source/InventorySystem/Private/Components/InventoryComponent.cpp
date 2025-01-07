@@ -52,6 +52,10 @@ void UInventoryComponent::InitializeWidgets()
 		if (IsValid(InteractWidgetClass))
 		{
 			InteractWidget = InteractWidget == nullptr ? CreateWidget<UUserWidget>(GetWorld(), InteractWidgetClass) : InteractWidget;
+			
+			// To construct InteractWidget.
+			InteractWidget->AddToViewport();
+			InteractWidget->RemoveFromParent();
 		}
 	}
 }
@@ -67,7 +71,8 @@ void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	if (TraceItemToPickUp().bFoundItem && InteractWidget)
-	{
+	{	
+		OnItemSearchResult.Broadcast(TraceItemToPickUp());
 		InteractWidget->AddToViewport();
 	}
 	else if (!TraceItemToPickUp().bFoundItem)
@@ -203,6 +208,11 @@ void UInventoryComponent::DecreaseHealth(float HealthToDecrease)
 {
 	Health -= HealthToDecrease;
 	OnHealthChanged.Broadcast();
+}
+
+UUserWidget* UInventoryComponent::GetInventoryWidget()
+{	
+	return InventoryWidget = InventoryWidget == nullptr ? CreateWidget<UUserWidget>(GetWorld(), InventoryWidgetClass) : InventoryWidget;
 }
 
 AController* UInventoryComponent::GetOwnerController()
