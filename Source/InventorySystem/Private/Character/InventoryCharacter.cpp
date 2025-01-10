@@ -8,6 +8,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InventoryComponent.h"
+#include "Components/SceneCaptureComponent2D.h"
 #include "Engine/LocalPlayer.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -45,6 +46,12 @@ AInventoryCharacter::AInventoryCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false; 
 
+	SceneCapture = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCaptureCamera"));
+	SceneCapture->SetupAttachment(GetCapsuleComponent());
+	SceneCapture->SetRelativeLocation(FVector(260.f, 0.f, -5.f));
+	SceneCapture->SetRelativeRotation(FRotator(0.f, -180.f, 0.f));
+	SceneCapture->FOVAngle = 48.f;
+
 	MouseSensitivity = 0.6f;
 
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
@@ -70,6 +77,7 @@ void AInventoryCharacter::BeginPlay()
 	}
 
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AInventoryCharacter::OnCapsuleBeginOverlap);
+	SceneCapture->ShowOnlyActorComponents(this);
 }
 
 void AInventoryCharacter::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

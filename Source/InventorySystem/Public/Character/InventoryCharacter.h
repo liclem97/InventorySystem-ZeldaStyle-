@@ -13,6 +13,7 @@ class UInputAction;
 struct FInputActionValue;
 class UInventoryComponent;
 class AInventoryPC;
+class USceneCaptureComponent2D;
 
 UCLASS()
 class INVENTORYSYSTEM_API AInventoryCharacter : public ACharacter
@@ -60,6 +61,9 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	UCameraComponent* FollowCamera;
 
+	UPROPERTY(VisibleAnywhere, Category = Camera)
+	USceneCaptureComponent2D* SceneCapture;
+
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputMappingContext* DefaultMappingContext;
@@ -99,4 +103,6 @@ private:
 	UInventoryComponent* InventoryComponent;
 
 	bool bOpenedWidget = false;
+
+
 };
