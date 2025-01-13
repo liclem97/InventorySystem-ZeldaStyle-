@@ -52,6 +52,14 @@ AInventoryCharacter::AInventoryCharacter()
 	SceneCapture->SetRelativeRotation(FRotator(0.f, -180.f, 0.f));
 	SceneCapture->FOVAngle = 48.f;
 
+	SwordComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Sword"));
+	SwordComponent->SetupAttachment(GetMesh());
+	SwordComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "SwordSocket");
+
+	ShieldComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Shield"));
+	ShieldComponent->SetupAttachment(GetMesh());
+	ShieldComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "ShieldSocket");
+
 	MouseSensitivity = 0.6f;
 
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
@@ -96,6 +104,16 @@ void AInventoryCharacter::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedC
 		}
 		Money->Destroy();
 	}
+}
+
+void AInventoryCharacter::SetSword(UStaticMesh* NewSword)
+{
+	SwordComponent->SetStaticMesh(NewSword);
+}
+
+void AInventoryCharacter::SetShield(UStaticMesh* NewShield)
+{
+	ShieldComponent->SetStaticMesh(NewShield);
 }
 
 void AInventoryCharacter::Move(const FInputActionValue& Value)

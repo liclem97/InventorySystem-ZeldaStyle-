@@ -37,6 +37,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetOpenedWidget(bool InOpened);
 	/** end Setter */
+
+	UFUNCTION(BlueprintCallable)
+	void SetSword(UStaticMesh* NewSword);
+
+	UFUNCTION(BlueprintCallable)
+	void SetShield(UStaticMesh* NewShield);
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -63,6 +70,12 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	USceneCaptureComponent2D* SceneCapture;
+
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* SwordComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* ShieldComponent;
 
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, Category = Input)
