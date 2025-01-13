@@ -210,6 +210,17 @@ void UInventoryComponent::DecreaseHealth(float HealthToDecrease)
 	OnHealthChanged.Broadcast();
 }
 
+void UInventoryComponent::UseEatables(int32 Index)
+{	
+	FSlotStruct& EatableRef = AllItem.Eatables[Index];
+	
+	AllItem.Eatables[Index].ItemID = EatableRef.ItemID;
+	AllItem.Eatables[Index].Quantity = EatableRef.Quantity - 1;
+	AllItem.Eatables[Index].ItemType = EatableRef.ItemType;
+
+	OnInventoryUpdated.Broadcast(AllItem);
+}
+
 UUserWidget* UInventoryComponent::GetInventoryWidget()
 {	
 	return InventoryWidget = InventoryWidget == nullptr ? CreateWidget<UUserWidget>(GetWorld(), InventoryWidgetClass) : InventoryWidget;

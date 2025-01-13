@@ -63,6 +63,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DecreaseHealth(float HealthToDecrease);
 
+	UFUNCTION(BlueprintCallable)
+	void UseEatables(int32 Index);
+
 	/** Getter */
 	FORCEINLINE int32 GetMoneyAmount() const { return MoneyAmount; }
 
@@ -72,6 +75,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetMaxHealth() const { return MaxHealth; }
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE FAllItemStruct GetAllItem() const { return AllItem; }
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
