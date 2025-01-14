@@ -156,6 +156,7 @@ void AInventoryCharacter::Inventory()
 		return;
 	}
 	InventoryComponent->Inventory();
+	InventoryComponent->OnInventoryUpdated.Broadcast(InventoryComponent->GetAllItem());
 }
 
 void AInventoryCharacter::PressedSwordTab()

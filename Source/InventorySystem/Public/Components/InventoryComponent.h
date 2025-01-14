@@ -37,6 +37,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthChanged);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSwordTabSelected);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnShieldTabSelected);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEatableTabSelected);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEquippedItem);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class INVENTORYSYSTEM_API UInventoryComponent : public UActorComponent
@@ -83,7 +84,21 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	UUserWidget* GetInventoryWidget();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FSlotStruct GetEquippedSword() const { return EquippedSword; }
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FSlotStruct GetEquippedShield() const { return EquippedShield; }
 	/** end Getter */
+
+	/** Setter */
+	UFUNCTION(BlueprintCallable)
+	void SetEquippedSword(FSlotStruct NewSword) { EquippedSword = NewSword; }
+
+	UFUNCTION(BlueprintCallable)
+	void SetEquippedShield(FSlotStruct NewShield) { EquippedShield = NewShield; }
+	/** end Setter */
 
 	/** Delegate */
 	UPROPERTY(BlueprintAssignable, Category = "Inventory")
@@ -106,6 +121,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Inventory")
 	FOnItemSearchResult OnItemSearchResult;
+
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
+	FOnEquippedItem OnEquippedItem;
 	/** end Delegate */
 
 protected:
@@ -168,4 +186,10 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "DataTable")
 	UDataTable* ItemDataTable;
+
+	UPROPERTY()
+	FSlotStruct EquippedSword;
+
+	UPROPERTY()
+	FSlotStruct EquippedShield;
 };
