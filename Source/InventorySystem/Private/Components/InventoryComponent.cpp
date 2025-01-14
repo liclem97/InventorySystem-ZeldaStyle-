@@ -221,6 +221,15 @@ void UInventoryComponent::UseEatables(int32 Index)
 	OnInventoryUpdated.Broadcast(AllItem);
 }
 
+void UInventoryComponent::DropEatables(int32 Index)
+{
+	AllItem.Eatables[Index].ItemID.DataTable = nullptr;
+	AllItem.Eatables[Index].ItemID.RowName = NAME_None;
+	AllItem.Eatables[Index].Quantity = 0;	
+
+	OnInventoryUpdated.Broadcast(AllItem);
+}
+
 UUserWidget* UInventoryComponent::GetInventoryWidget()
 {	
 	return InventoryWidget = InventoryWidget == nullptr ? CreateWidget<UUserWidget>(GetWorld(), InventoryWidgetClass) : InventoryWidget;

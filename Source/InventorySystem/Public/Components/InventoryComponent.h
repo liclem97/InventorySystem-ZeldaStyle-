@@ -66,6 +66,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UseEatables(int32 Index);
 
+	UFUNCTION(BlueprintCallable)
+	void DropEatables(int32 Index);
+
 	/** Getter */
 	FORCEINLINE int32 GetMoneyAmount() const { return MoneyAmount; }
 

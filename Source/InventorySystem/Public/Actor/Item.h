@@ -25,7 +25,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Data")
 	UDataTable* ItemDataTable;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data", meta = (ExposeOnSpawn = "true"))
 	FSlotStruct ItemData;
 
 private:
