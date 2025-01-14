@@ -70,6 +70,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DropEatables(int32 Index);
 
+	UFUNCTION(BlueprintCallable)
+	void DropSword(int32 Index);
+
+	UFUNCTION(BlueprintCallable)
+	void DropShield(int32 Index);
+
 	/** Getter */
 	FORCEINLINE int32 GetMoneyAmount() const { return MoneyAmount; }
 
