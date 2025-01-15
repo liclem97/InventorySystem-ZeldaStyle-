@@ -36,13 +36,13 @@ public:
 	/** Setter */
 	UFUNCTION(BlueprintCallable)
 	void SetOpenedWidget(bool InOpened);
-	/** end Setter */
 
 	UFUNCTION(BlueprintCallable)
 	void SetSword(UStaticMesh* NewSword);
 
 	UFUNCTION(BlueprintCallable)
 	void SetShield(UStaticMesh* NewShield);
+	/** end Setter */
 
 protected:
 	virtual void BeginPlay() override;

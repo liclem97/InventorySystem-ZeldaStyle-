@@ -5,7 +5,7 @@
 
 UENUM(BlueprintType)
 enum class EItemTypes : uint8
-{
+{	
 	Sword UMETA(DisplayName = "Sword"),
 	Shield UMETA(DisplayName = "Shield"),
 	Eatable UMETA(DisplayName = "Eatable")

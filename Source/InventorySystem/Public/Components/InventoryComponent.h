@@ -138,6 +138,17 @@ protected:
 	void InitializeWidgets();
 	void ResizeInventory();
 
+	/** Drag and Drop */
+	UFUNCTION(BlueprintCallable)
+	void DeleteDraggedSword(int32 Index);
+
+	UFUNCTION(BlueprintCallable)
+	void DeleteDraggedShield(int32 Index);
+
+	UFUNCTION(BlueprintCallable)
+	void DeleteDraggedEatable(int32 Index);
+	/* end Drag and Drop*/
+
 private:
 	UPROPERTY()
 	AInventoryPC* PlayerController;

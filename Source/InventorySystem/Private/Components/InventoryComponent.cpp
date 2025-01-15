@@ -67,6 +67,36 @@ void UInventoryComponent::ResizeInventory()
 	AllItem.Eatables.SetNum(SizeOfEatables);
 }
 
+void UInventoryComponent::DeleteDraggedSword(int32 Index)
+{
+	AllItem.Swords[Index].ItemID.DataTable = nullptr;
+	AllItem.Swords[Index].ItemID.RowName = NAME_None;
+	AllItem.Swords[Index].Quantity = 0;
+	AllItem.Swords[Index].ItemType = EItemTypes::Sword;
+
+	OnInventoryUpdated.Broadcast(AllItem);
+}
+
+void UInventoryComponent::DeleteDraggedShield(int32 Index)
+{
+	AllItem.Shields[Index].ItemID.DataTable = nullptr;
+	AllItem.Shields[Index].ItemID.RowName = NAME_None;
+	AllItem.Shields[Index].Quantity = 0;
+	AllItem.Shields[Index].ItemType = EItemTypes::Shield;
+
+	OnInventoryUpdated.Broadcast(AllItem);
+}
+
+void UInventoryComponent::DeleteDraggedEatable(int32 Index)
+{
+	AllItem.Eatables[Index].ItemID.DataTable = nullptr;
+	AllItem.Eatables[Index].ItemID.RowName = NAME_None;
+	AllItem.Eatables[Index].Quantity = 0;
+	AllItem.Eatables[Index].ItemType = EItemTypes::Eatable;
+
+	OnInventoryUpdated.Broadcast(AllItem);
+}
+
 void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
