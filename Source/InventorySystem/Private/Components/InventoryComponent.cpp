@@ -97,6 +97,15 @@ void UInventoryComponent::DeleteDraggedEatable(int32 Index)
 	OnInventoryUpdated.Broadcast(AllItem);
 }
 
+void UInventoryComponent::DropDraggedSword(int32 Index, FSlotStruct DraggedItem)
+{
+	AllItem.Swords[Index].ItemID = DraggedItem.ItemID;
+	AllItem.Swords[Index].Quantity = DraggedItem.Quantity;
+	AllItem.Swords[Index].ItemType = DraggedItem.ItemType;
+
+	OnInventoryUpdated.Broadcast(AllItem);
+}
+
 void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);

@@ -147,6 +147,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void DeleteDraggedEatable(int32 Index);
+
+	UFUNCTION(BlueprintCallable)
+	void DropDraggedSword(int32 Index, FSlotStruct DraggedItem);
 	/* end Drag and Drop*/
 
 private:
