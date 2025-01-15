@@ -9,6 +9,7 @@
 
 class AInventoryPC;
 class AInventoryCharacter;
+class UInventoryDragAndDrop;
 
 USTRUCT(BlueprintType)
 struct FItemSearchResult
@@ -137,6 +138,7 @@ protected:
 	AController* GetOwnerController();
 	void InitializeWidgets();
 	void ResizeInventory();
+	bool IsSameItem(FSlotStruct DragAndDropItem, FSlotStruct SlotItem);
 
 	/** Drag and Drop */
 	UFUNCTION(BlueprintCallable)
@@ -149,7 +151,7 @@ protected:
 	void DeleteDraggedEatable(int32 Index);
 
 	UFUNCTION(BlueprintCallable)
-	void DropDraggedSword(int32 Index, FSlotStruct DraggedItem);
+	void DropDraggedSword(UInventoryDragAndDrop* InventoryDragAndDrop, int32 SlotIndex, FSlotStruct SlotItem);
 	/* end Drag and Drop*/
 
 private:

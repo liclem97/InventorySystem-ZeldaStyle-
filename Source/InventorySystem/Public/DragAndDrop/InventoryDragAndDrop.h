@@ -14,7 +14,10 @@ UCLASS()
 class INVENTORYSYSTEM_API UInventoryDragAndDrop : public UDragDropOperation
 {
 	GENERATED_BODY()
-	
+
+public:
+	FORCEINLINE FSlotStruct GetItem() const { return Item; }
+	FORCEINLINE int32 GetIndex() const { return Index; }
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (ExposeOnSpawn = "true"))

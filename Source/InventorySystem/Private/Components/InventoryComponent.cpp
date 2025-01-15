@@ -6,6 +6,7 @@
 #include "Actor/Item.h"
 #include "Blueprint/UserWidget.h"
 #include "Character/InventoryCharacter.h"
+#include "DragAndDrop/InventoryDragAndDrop.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -67,6 +68,11 @@ void UInventoryComponent::ResizeInventory()
 	AllItem.Eatables.SetNum(SizeOfEatables);
 }
 
+bool UInventoryComponent::IsSameItem(FSlotStruct DragAndDropItem, FSlotStruct SlotItem)
+{	
+	return DragAndDropItem.ItemID.RowName == SlotItem.ItemID.RowName;
+}
+
 void UInventoryComponent::DeleteDraggedSword(int32 Index)
 {
 	AllItem.Swords[Index].ItemID.DataTable = nullptr;
@@ -97,13 +103,28 @@ void UInventoryComponent::DeleteDraggedEatable(int32 Index)
 	OnInventoryUpdated.Broadcast(AllItem);
 }
 
-void UInventoryComponent::DropDraggedSword(int32 Index, FSlotStruct DraggedItem)
-{
-	AllItem.Swords[Index].ItemID = DraggedItem.ItemID;
-	AllItem.Swords[Index].Quantity = DraggedItem.Quantity;
-	AllItem.Swords[Index].ItemType = DraggedItem.ItemType;
+void UInventoryComponent::DropDraggedSword(UInventoryDragAndDrop* InventoryDragAndDrop, int32 SlotIndex, FSlotStruct SlotItem)
+{	
+	if (!IsValid(InventoryDragAndDrop)) return;
 
-	OnInventoryUpdated.Broadcast(AllItem);
+	int32 DraggedIndex = InventoryDragAndDrop->GetIndex();
+	FSlotStruct DraggedItem = InventoryDragAndDrop->GetItem();
+
+	if (IsSameItem(DraggedItem, SlotItem))
+	{	
+		AllItem.Swords[DraggedIndex] = DraggedItem;		
+		OnInventoryUpdated.Broadcast(AllItem);
+		return;
+	}
+	else
+	{
+		if (SlotItem.Quantity == 0)
+		{	
+			AllItem.Swords[SlotIndex] = DraggedItem;
+			OnInventoryUpdated.Broadcast(AllItem);
+			return;
+		}
+	}
 }
 
 void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
