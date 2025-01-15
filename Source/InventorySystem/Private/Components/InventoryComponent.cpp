@@ -118,9 +118,78 @@ void UInventoryComponent::DropDraggedSword(UInventoryDragAndDrop* InventoryDragA
 	}
 	else
 	{
-		if (SlotItem.Quantity == 0)
+		if (SlotItem.Quantity == 0) // Empty Slot.
 		{	
 			AllItem.Swords[SlotIndex] = DraggedItem;
+			OnInventoryUpdated.Broadcast(AllItem);
+			return;
+		}
+		else // Swap Item.
+		{
+			AllItem.Swords[DraggedIndex] = SlotItem;
+			AllItem.Swords[SlotIndex] = DraggedItem;
+			OnInventoryUpdated.Broadcast(AllItem);
+			return;
+		}
+	}
+}
+
+void UInventoryComponent::DropDraggedShield(UInventoryDragAndDrop* InventoryDragAndDrop, int32 SlotIndex, FSlotStruct SlotItem)
+{
+	if (!IsValid(InventoryDragAndDrop)) return;
+
+	int32 DraggedIndex = InventoryDragAndDrop->GetIndex();
+	FSlotStruct DraggedItem = InventoryDragAndDrop->GetItem();
+
+	if (IsSameItem(DraggedItem, SlotItem))
+	{
+		AllItem.Shields[DraggedIndex] = DraggedItem;
+		OnInventoryUpdated.Broadcast(AllItem);
+		return;
+	}
+	else
+	{
+		if (SlotItem.Quantity == 0) // Empty Slot.
+		{
+			AllItem.Shields[SlotIndex] = DraggedItem;
+			OnInventoryUpdated.Broadcast(AllItem);
+			return;
+		}
+		else // Swap Item.
+		{
+			AllItem.Shields[DraggedIndex] = SlotItem;
+			AllItem.Shields[SlotIndex] = DraggedItem;
+			OnInventoryUpdated.Broadcast(AllItem);
+			return;
+		}
+	}
+}
+
+void UInventoryComponent::DropDraggedEatable(UInventoryDragAndDrop* InventoryDragAndDrop, int32 SlotIndex, FSlotStruct SlotItem)
+{
+	if (!IsValid(InventoryDragAndDrop)) return;
+
+	int32 DraggedIndex = InventoryDragAndDrop->GetIndex();
+	FSlotStruct DraggedItem = InventoryDragAndDrop->GetItem();
+
+	if (IsSameItem(DraggedItem, SlotItem))
+	{
+		AllItem.Eatables[DraggedIndex] = DraggedItem;
+		OnInventoryUpdated.Broadcast(AllItem);
+		return;
+	}
+	else
+	{
+		if (SlotItem.Quantity == 0) // Empty Slot.
+		{
+			AllItem.Eatables[SlotIndex] = DraggedItem;
+			OnInventoryUpdated.Broadcast(AllItem);
+			return;
+		}
+		else // Swap Item.
+		{
+			AllItem.Eatables[DraggedIndex] = SlotItem;
+			AllItem.Eatables[SlotIndex] = DraggedItem;
 			OnInventoryUpdated.Broadcast(AllItem);
 			return;
 		}

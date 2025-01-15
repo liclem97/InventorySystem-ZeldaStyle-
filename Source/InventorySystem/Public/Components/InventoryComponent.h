@@ -152,6 +152,12 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void DropDraggedSword(UInventoryDragAndDrop* InventoryDragAndDrop, int32 SlotIndex, FSlotStruct SlotItem);
+
+	UFUNCTION(BlueprintCallable)
+	void DropDraggedShield(UInventoryDragAndDrop* InventoryDragAndDrop, int32 SlotIndex, FSlotStruct SlotItem);
+
+	UFUNCTION(BlueprintCallable)
+	void DropDraggedEatable(UInventoryDragAndDrop* InventoryDragAndDrop, int32 SlotIndex, FSlotStruct SlotItem);
 	/* end Drag and Drop*/
 
 private:
