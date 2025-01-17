@@ -137,8 +137,13 @@ protected:
 	virtual void BeginPlay() override;	
 	AController* GetOwnerController();
 	void InitializeWidgets();
-	void ResizeInventory();
 	bool IsSameItem(FSlotStruct DragAndDropItem, FSlotStruct SlotItem);
+	void SetInventorySize(int32 InSizeOfSwords, int32 InSizeOfShields, int32 InSizeOfEatables);
+
+	UFUNCTION(BlueprintCallable)
+	void UpgradeInventory(int32 SwordAmount, int32 ShieldAmount, int32 EatableAmount);	
+
+
 
 	/** Drag and Drop */
 	UFUNCTION(BlueprintCallable)

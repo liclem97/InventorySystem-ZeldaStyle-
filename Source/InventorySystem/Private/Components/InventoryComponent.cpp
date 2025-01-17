@@ -27,8 +27,7 @@ void UInventoryComponent::BeginPlay()
 	Super::BeginPlay();
 
 	InitializeWidgets();
-	ResizeInventory();
-	OnInventoryUpdated.Broadcast(AllItem);
+	SetInventorySize(SizeOfSwords, SizeOfShields, SizeOfEatables);
 }
 
 void UInventoryComponent::InitializeWidgets()
@@ -61,11 +60,22 @@ void UInventoryComponent::InitializeWidgets()
 	}
 }
 
-void UInventoryComponent::ResizeInventory()
+void UInventoryComponent::SetInventorySize(int32 InSizeOfSwords, int32 InSizeOfShields, int32 InSizeOfEatables)
 {
-	AllItem.Swords.SetNum(SizeOfSwords);
-	AllItem.Shields.SetNum(SizeOfShields);
-	AllItem.Eatables.SetNum(SizeOfEatables);
+	AllItem.Swords.SetNum(InSizeOfSwords);
+	AllItem.Shields.SetNum(InSizeOfShields);
+	AllItem.Eatables.SetNum(InSizeOfEatables);
+
+	OnInventoryUpdated.Broadcast(AllItem);
+}
+
+void UInventoryComponent::UpgradeInventory(int32 SwordAmount, int32 ShieldAmount, int32 EatableAmount)
+{	
+	int32 LengthOfSwords = AllItem.Swords.Num() + SwordAmount;
+	int32 LengthOfShields = AllItem.Shields.Num() + ShieldAmount;
+	int32 LengthOfEatables = AllItem.Eatables.Num() + EatableAmount;
+
+	SetInventorySize(LengthOfSwords, LengthOfShields, LengthOfEatables);
 }
 
 bool UInventoryComponent::IsSameItem(FSlotStruct DragAndDropItem, FSlotStruct SlotItem)
