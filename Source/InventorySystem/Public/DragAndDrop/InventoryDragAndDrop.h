@@ -18,6 +18,7 @@ class INVENTORYSYSTEM_API UInventoryDragAndDrop : public UDragDropOperation
 public:
 	FORCEINLINE FSlotStruct GetItem() const { return Item; }
 	FORCEINLINE int32 GetIndex() const { return Index; }
+	FORCEINLINE bool GetEquipped() const { return Equipped; }
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (ExposeOnSpawn = "true"))
@@ -25,4 +26,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (ExposeOnSpawn = "true"))
 	int32 Index;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (ExposeOnSpawn = "true"))
+	bool Equipped;
 };

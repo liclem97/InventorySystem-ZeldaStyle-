@@ -97,14 +97,20 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FSlotStruct GetEquippedShield() const { return EquippedShield; }
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	int32 GetEquippedSwordIndex() const { return EquippedSwordIndex; }
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	int32 GetEquippedShieldIndex() const { return EquippedShieldIndex; }
 	/** end Getter */
 
 	/** Setter */
 	UFUNCTION(BlueprintCallable)
-	void SetEquippedSword(FSlotStruct NewSword) { EquippedSword = NewSword; }
+	void SetEquippedSwordAndIndex(FSlotStruct NewSword, int32 NewIndex);
 
 	UFUNCTION(BlueprintCallable)
-	void SetEquippedShield(FSlotStruct NewShield) { EquippedShield = NewShield; }
+	void SetEquippedShieldAndIndex(FSlotStruct NewShield, int32 NewIndex);
 	/** end Setter */
 
 	/** Delegate */
@@ -142,8 +148,6 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void UpgradeInventory(int32 SwordAmount, int32 ShieldAmount, int32 EatableAmount);	
-
-
 
 	/** Drag and Drop */
 	UFUNCTION(BlueprintCallable)
@@ -225,4 +229,10 @@ private:
 
 	UPROPERTY()
 	FSlotStruct EquippedShield;
+
+	UPROPERTY()
+	int32 EquippedSwordIndex;
+
+	UPROPERTY()
+	int32 EquippedShieldIndex;
 };

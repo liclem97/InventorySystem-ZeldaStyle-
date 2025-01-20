@@ -119,6 +119,12 @@ void UInventoryComponent::DropDraggedSword(UInventoryDragAndDrop* InventoryDragA
 
 	int32 DraggedIndex = InventoryDragAndDrop->GetIndex();
 	FSlotStruct DraggedItem = InventoryDragAndDrop->GetItem();
+	bool bEquipped = InventoryDragAndDrop->GetEquipped();
+
+	if (bEquipped)
+	{
+		EquippedSwordIndex = SlotIndex;
+	}
 
 	if (IsSameItem(DraggedItem, SlotItem))
 	{	
@@ -150,6 +156,12 @@ void UInventoryComponent::DropDraggedShield(UInventoryDragAndDrop* InventoryDrag
 
 	int32 DraggedIndex = InventoryDragAndDrop->GetIndex();
 	FSlotStruct DraggedItem = InventoryDragAndDrop->GetItem();
+	bool bEquipped = InventoryDragAndDrop->GetEquipped();
+
+	if (bEquipped)
+	{
+		EquippedShieldIndex = SlotIndex;
+	}
 
 	if (IsSameItem(DraggedItem, SlotItem))
 	{
@@ -252,7 +264,7 @@ FItemSearchResult UInventoryComponent::TraceItemToPickUp()
 	PlayerCharacter = PlayerCharacter == nullptr ? Cast<AInventoryCharacter>(GetOwner()) : PlayerCharacter;
 	FItemSearchResult Result;
 
-	FVector Start = PlayerCharacter->GetActorLocation() - FVector(0, 0, 60.f);
+	FVector Start = PlayerCharacter->GetActorLocation() - FVector(0, 0, 65.f);
 	FVector End = (PlayerCharacter->GetActorForwardVector() * ItemTraceRange) + Start;
 
 	FHitResult HitResult;
@@ -394,6 +406,18 @@ void UInventoryComponent::DropShield(int32 Index)
 UUserWidget* UInventoryComponent::GetInventoryWidget()
 {	
 	return InventoryWidget = InventoryWidget == nullptr ? CreateWidget<UUserWidget>(GetWorld(), InventoryWidgetClass) : InventoryWidget;
+}
+
+void UInventoryComponent::SetEquippedSwordAndIndex(FSlotStruct NewSword, int32 NewIndex)
+{
+	EquippedSword = NewSword;
+	EquippedSwordIndex = NewIndex;
+}
+
+void UInventoryComponent::SetEquippedShieldAndIndex(FSlotStruct NewShield, int32 NewIndex)
+{
+	EquippedShield = NewShield;
+	EquippedShieldIndex = NewIndex;
 }
 
 AController* UInventoryComponent::GetOwnerController()
