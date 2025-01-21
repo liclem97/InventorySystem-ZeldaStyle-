@@ -374,7 +374,6 @@ void UInventoryComponent::UseEatables(int32 Index)
 
 void UInventoryComponent::DropEatables(int32 Index)
 {	
-	//Todo : 아이템을 한번에 드랍하는 버그가 있음.
 	AllItem.Eatables[Index].ItemID.DataTable = nullptr;
 	AllItem.Eatables[Index].ItemID.RowName = NAME_None;
 	AllItem.Eatables[Index].Quantity = 0;	

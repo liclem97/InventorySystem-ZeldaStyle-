@@ -7,6 +7,7 @@
 #include "Inventory.h"
 #include "InventoryDragAndDrop.generated.h"
 
+class UInventoryComponent;
 /**
  * 
  */
@@ -29,4 +30,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (ExposeOnSpawn = "true"))
 	bool Equipped;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (ExposeOnSpawn = "true"))
+	UInventoryComponent* InventoryComponent;
 };
